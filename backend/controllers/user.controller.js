@@ -88,4 +88,4 @@ export default {
   list,
   remove,
   update
-}
+}  
