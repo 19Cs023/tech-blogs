@@ -81,3 +81,6 @@ const update = async (req, res) => {
         })
     }
 }   
+
+export default { create, commentByID, read, allcomments, listByUser, update }
+

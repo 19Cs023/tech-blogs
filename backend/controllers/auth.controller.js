@@ -1,91 +1,39 @@
-import User from '../models/users.js'
-import extend from 'lodash/extend.js'
+﻿import User from '../models/user.js';
+import jwt from 'jsonwebtoken';
+import { expressjwt } from 'express-jwt';
 
-const create = async (req, res) => {
-  const user = new User(req.body)
+const signin = async (req, res) => {
   try {
-    await user.save()
-    return res.status(200).json({
-      message: "Successfully signed up!"
-    })
+    let user = await User.findOne({ 'email': req.body.email });
+    if (!user) return res.status('401').json({ error: 'User not found' });
+    if (!user.authenticate(req.body.password)) {
+      return res.status('401').send({ error: 'Email and password don\'t match.' });
+    }
+    const token = jwt.sign({ _id: user._id }, 'secret');
+    res.cookie('t', token, { expire: new Date() + 9999 });
+    return res.json({ token, user: { _id: user._id, name: user.name, email: user.email }});
   } catch (err) {
-    return res.status(400).json({
-      error: err.message
-    })
+    return res.status('401').json({ error: 'Could not sign in' });
   }
-}
+};
 
-/**
- * Load user and append to req.
- */
-const userByID = async (req, res, next, id) => {
-  try {
-    let user = await User.findById(id)
-    if (!user)
-      return res.status('400').json({
-        error: "User not found"
-      })
-    req.profile = user
-    next()
-  } catch (err) {
-    return res.status('400').json({
-      error: err.message
-    })
+const signout = (req, res) => {
+  res.clearCookie('t');
+  return res.status('200').json({ message: 'signed out' });
+};
+
+const requireSignin = expressjwt({
+  secret: 'secret',
+  algorithms: ['HS256'],
+  userProperty: 'auth'
+});
+
+const hasAuthorization = (req, res, next) => {
+  const authorized = req.profile && req.auth && req.profile._id == req.auth._id;
+  if (!(authorized)) {
+    return res.status('403').json({ error: 'User is not authorized' });
   }
-}
+  next();
+};
 
-const read = (req, res) => {
-  req.profile.hashed_password = undefined
-  req.profile.salt = undefined
-  return res.json(req.profile)
-}
-
-const list = async (req, res) => {
-  try {
-    let users = await User.find().select('name email updated created')
-    res.json(users)
-  } catch (err) {
-    return res.status(400).json({
-      error: err.message
-    })
-  }
-}
-
-const update = async (req, res) => {
-  try {
-    let user = req.profile
-    user = extend(user, req.body)
-    user.updated = Date.now()
-    await user.save()
-    user.hashed_password = undefined
-    user.salt = undefined
-    res.json(user)
-  } catch (err) {
-    return res.status(400).json({
-      error: err.message
-    })
-  }
-}
-
-const remove = async (req, res) => {
-  try {
-    let user = req.profile
-    let deletedUser = await user.remove()
-    deletedUser.hashed_password = undefined
-    deletedUser.salt = undefined
-    res.json(deletedUser)
-  } catch (err) {
-    return res.status(400).json({
-      error: err.message
-    })
-  }
-}
-
-export default {
-  create,
-  userByID,
-  read,
-  list,
-  remove,
-  update
-}
+export default { signin, signout, requireSignin, hasAuthorization };
