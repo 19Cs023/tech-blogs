@@ -116,6 +116,18 @@ const listBySearchQuery = async (req, res) => {
     }
 }
 
+// get all public blogs
+const list = async (req, res) => {
+  try {
+    let blogs = await Blogs.find().sort('-created').populate('recorded_by', '_id name')
+    res.json(blogs)
+  } catch (err) {
+    return res.status(400).json({
+      error: err.message
+    })
+  }
+}
+
 
 
 
@@ -163,6 +175,7 @@ export default {
     listByTags,
     listBySearchQuery,
     listByUser,
+    list,
     remove,
     update,
     hasAuthorization
