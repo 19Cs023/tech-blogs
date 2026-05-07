@@ -9,7 +9,24 @@ const UserAccount = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  
+   const handleDelete = async (blogId) => {
+    if (!window.confirm('Are you sure you want to delete this blog?')) return;
+    
+    const token = localStorage.getItem('token');
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      await axios.delete(`http://localhost:5000/api/blogs/${blogId}`, config);
+      setBlogs(blogs.filter(blog => blog._id !== blogId));
+    } catch (err) {
+      console.error('Error deleting blog:', err);
+      alert('Failed to delete the blog.');
+    }
+  };
   useEffect(() => {
     const fetchUserDataAndBlogs = async () => {
       const token = localStorage.getItem('token');
@@ -29,7 +46,7 @@ const UserAccount = () => {
             Authorization: `Bearer ${token}`
           }
         };
-
+        
         // If you need fresh data, you could also fetch user from /api/users/:userId
         // const userResponse = await axios.get(`http://localhost:5000/api/users/${parsedUser._id}`, config);
         // setUser(userResponse.data);
@@ -81,12 +98,14 @@ const UserAccount = () => {
                   <h4>{blog.title}</h4>
                 </Link>
                 <span className="account-blog-tag">{blog.tag}</span>
-                <p className="account-blog-excerpt">
-                  {(blog.content || '').length > 120 ? `${blog.content.substring(0, 120)}...` : blog.content}
-                </p>
+                <p className="account-blog-excerpt" dangerouslySetInnerHTML={{ __html: (blog.content || '').length > 50 ? `${blog.content.substring(0, 50)}...` : blog.content }} />
                 <div className="account-blog-meta">
                   Published: {new Date(blog.created).toLocaleDateString()}
                 </div>
+                <div className="account-blog-actions">
+                  <button className="btn-edit" onClick={() => navigate(`/edit/${blog._id}`)}>Edit</button>
+                  <button className="btn-delete" onClick={() => handleDelete(blog._id)}>Delete</button>
+              </div>
               </div>
             ))}
           </div>

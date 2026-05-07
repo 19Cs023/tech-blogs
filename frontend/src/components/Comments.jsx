@@ -8,11 +8,7 @@ const Comments = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchComments();
-  }, []);
-
-  const fetchComments = async () => {
+  const fetchComments = React.useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/comments');
       setComments(response.data);
@@ -20,7 +16,12 @@ const Comments = () => {
       setError('Failed to load comments');
       console.error(err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchComments();
+  }, [fetchComments]);
 
   const handleChange = (e) => {
     setNewComment({ ...newComment, [e.target.name]: e.target.value });

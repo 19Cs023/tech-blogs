@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Hero.css';
+import heroImage from '../assets/herotechblogs.jpg'; // Placeholder image path
 
 function Hero() {
   return (
@@ -17,10 +18,7 @@ function Hero() {
         </div>
       </div>
       <div className="hero-image">
-        {/* Placeholder for an illustration or dashboard preview */}
-        <div className="image-placeholder">
-          <span>tech article dashboard</span>
-        </div>
+        <img src={heroImage} alt="Tech Article Dashboard" />
       </div>
     </section>
   );

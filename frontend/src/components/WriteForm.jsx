@@ -1,7 +1,10 @@
+//no-ts-check
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './WriteForm.css';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const WriteForm = ({ existingBlog: propBlog }) => {
   const { id } = useParams();
@@ -24,8 +27,12 @@ const WriteForm = ({ existingBlog: propBlog }) => {
           setTitle(blog.title);
           setTag(blog.tag);
           setContent(blog.content);
-        } catch (err) {
-          setError('Failed to load blog for editing.');
+        } catch (_err) {
+          if (_err.response && _err.response.status === 404) {
+            setError('Blog not found for editing.');
+          } else {
+            setError('Failed to load blog for editing.');
+          }
         } finally {
           setFetching(false);
         }
@@ -33,14 +40,6 @@ const WriteForm = ({ existingBlog: propBlog }) => {
     };
     fetchBlog();
   }, [id, propBlog]);
-
-  const handleFormat = (command, value = null) => {
-    document.execCommand(command, false, value);
-  };
-
-  const handleContentChange = (e) => {
-    setContent(e.target.innerHTML);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,21 +117,11 @@ const WriteForm = ({ existingBlog: propBlog }) => {
 
         <div className="form-group">
           <label>Content</label>
-          <div className="toolbar">
-            <button type="button" onClick={() => handleFormat('bold')}><b>B</b></button>
-            <button type="button" onClick={() => handleFormat('italic')}><i>I</i></button>
-            <button type="button" onClick={() => handleFormat('underline')}><u>U</u></button>
-            <button type="button" onClick={() => handleFormat('insertUnorderedList')}>List</button>
-            <button type="button" onClick={() => handleFormat('formatBlock', 'H3')}>H3</button>
-          </div>
-          
-          <div 
-            className="editor-content"
-            contentEditable={true}
-            onInput={handleContentChange}
-            suppressContentEditableWarning={true}
-            style={{ minHeight: '300px', border: '1px solid #ccc', padding: '15px', borderRadius: '4px' }}
-            dangerouslySetInnerHTML={{ __html: content }} // Initialize with existing content
+          <ReactQuill 
+            theme="snow" 
+            value={content} 
+            onChange={setContent} 
+            style={{ height: '300px', marginBottom: '50px' }}
           />
         </div>
 

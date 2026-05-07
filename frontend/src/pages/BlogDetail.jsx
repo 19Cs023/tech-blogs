@@ -46,11 +46,7 @@ const BlogDetail = () => {
           </div>
         </header>
         
-        <section className="blog-body">
-          {/* Split by newlines to render proper paragraphs */}
-          {(blog.content || '').split('\n').map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
+        <section className="blog-body" dangerouslySetInnerHTML={{ __html: blog.content }}>
         </section>
       </article>
 

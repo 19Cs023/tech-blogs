@@ -39,7 +39,12 @@ function App() {
             <Route path="/blogs/:id" element={<BlogDetail />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="/profile" element={<UserAccount />} />
-          </Routes>
+            <Route path="/write" element={<WriteForm />} />
+           <Route path="/edit/:id" element={<WriteForm />} />
+           <Route path="/dashboard" element={<DashBoard />} />
+           <Route path="/categories" element={<AllCategories />} />
+           {/* Add more routes as needed */}
+         </Routes>
         </main>
 
         <Footer />

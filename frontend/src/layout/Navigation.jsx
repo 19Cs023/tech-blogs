@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaSearch, FaTachometerAlt, FaLayerGroup, FaUserAlt, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import './Navigation.css';
 
 const Navigation = () => {
@@ -39,23 +40,23 @@ const Navigation = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{ padding: '8px 12px', borderRadius: '4px', border: '1px solid #ccc', width: '100%', maxWidth: '400px' }}
         />
-        <button type="submit" style={{ padding: '8px 15px', marginLeft: '8px', borderRadius: '4px', border: 'none', backgroundColor: '#007bff', color: 'white', cursor: 'pointer' }}>
-          Search
+        <button type="submit" style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 15px', marginLeft: '8px', borderRadius: '4px', border: 'none', backgroundColor: '#007bff', color: 'white', cursor: 'pointer' }}>
+          <FaSearch /> Search
         </button>
       </form>
 
       <div className="auth-buttons">
         {token ? (
           <>
-            <Link to="/dashboard" className="btn log-in">Dashboard</Link>
-            <Link to="/details" className="btn log-in">Categories</Link>
-            <Link to="/profile" className="btn log-in">Profile</Link>
-            <button className="btn sign-in" onClick={handleLogout}>Log Out</button>
+            <Link to="/dashboard" className="btn log-in" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}><FaTachometerAlt /> Dashboard</Link>
+            <Link to="/details" className="btn log-in" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}><FaLayerGroup /> Categories</Link>
+            <Link to="/profile" className="btn log-in" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}><FaUserAlt /> Profile</Link>
+            <button className="btn sign-in" onClick={handleLogout} style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}><FaSignOutAlt /> Log Out</button>
           </>
         ) : (
           <>
-            <Link to="/login" className="btn log-in">Log In</Link>
-            <Link to="/register" className="btn sign-in">Sign Up</Link>
+            <Link to="/login" className="btn log-in" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}><FaSignInAlt /> Log In</Link>
+            <Link to="/register" className="btn sign-in" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}><FaUserPlus /> Sign Up</Link>
           </>
         )}
       </div>

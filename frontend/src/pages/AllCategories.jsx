@@ -50,7 +50,6 @@ const AllCategories = () => {
                   {categoryBlogs.map(blog => (
                     <Link to={`/blogs/${blog._id}`} key={blog._id} className="category-article-card">
                       <h4>{blog.title}</h4>
-                      <p>{(blog.content || '').substring(0, 80)}...</p>
                       <small>{new Date(blog.created).toLocaleDateString()}</small>
                     </Link>
                   ))}
