@@ -11,6 +11,9 @@ router.route('/api/comments')
 router.route('/api/comments/user')
   .get(authCtrl.requireSignin, commentsCtrl.listByUser);
 
+router.route('/api/comments/byblog/:blogId')
+  .get(commentsCtrl.commentByblog);
+
 router.route('/api/comments/:commentId')
   .get(commentsCtrl.read)
   .put(commentsCtrl.update);

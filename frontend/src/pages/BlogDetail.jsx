@@ -59,7 +59,7 @@ const BlogDetail = () => {
       
       <section className="blog-comments-section">
         <h2>Discussion</h2>
-        <Comments />
+        <Comments blogId={id} />
       </section>
     </div>
   );

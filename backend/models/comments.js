@@ -19,6 +19,7 @@ const CommentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  blog_id: {type: mongoose.Schema.ObjectId, ref: 'Blog'},
   recorded_by: {type: mongoose.Schema.ObjectId, ref: 'User'}
 })
 

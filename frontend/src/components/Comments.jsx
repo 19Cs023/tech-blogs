@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Comments.css';
 
-const Comments = () => {
+const Comments = ({ blogId }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({ title: '', content: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchComments = React.useCallback(async () => {
+    if (!blogId) return;
     try {
-      const response = await axios.get('http://localhost:5000/api/comments');
+      const response = await axios.get(`http://localhost:5000/api/comments/byblog/${blogId}`);
       setComments(response.data);
     } catch (err) {
       setError('Failed to load comments');
       console.error(err);
     }
-  }, []);
+  }, [blogId]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -37,7 +38,8 @@ const Comments = () => {
       
       const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
       
-      await axios.post('http://localhost:5000/api/comments', newComment, config);
+      const payload = { ...newComment, blog_id: blogId };
+      await axios.post('http://localhost:5000/api/comments', payload, config);
       
       // Try fetching fresh data to get the populated recorded_by fields
       fetchComments();

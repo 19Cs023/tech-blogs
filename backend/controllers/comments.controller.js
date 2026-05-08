@@ -82,5 +82,19 @@ const update = async (req, res) => {
     }
 }   
 
-export default { create, commentByID, read, allcomments, listByUser, update }
+const commentByblog = async (req, res) => {
+    try {
+      let comments = await Comment.find({ blog_id: req.params.blogId })
+                                  .sort('-created')
+                                  .populate('recorded_by', '_id name')
+                                  .exec()
+      return res.json(comments)
+    } catch (err){
+      return res.status(400).json({
+          error: err.message
+      })
+    }
+}
+
+export default { create, commentByID, read, allcomments, listByUser, update, commentByblog }
 
