@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './AllCategories.css';
+import defaultImage from '../assets/default-blogs.jpg';
 
 const AllCategories = () => {
   const [blogs, setBlogs] = useState([]);
@@ -49,6 +50,10 @@ const AllCategories = () => {
                 <div className="category-articles">
                   {categoryBlogs.map(blog => (
                     <Link to={`/blogs/${blog._id}`} key={blog._id} className="category-article-card">
+                      <div className="article-image-wrapper">
+                      {blog.Image && <img src={blog.Image} alt={blog.title} className="article-image" />}
+                      {!blog.Image && <img src={defaultImage} alt={blog.title} className="article-image" />}
+                      </div>
                       <h4>{blog.title}</h4>
                       <small>{new Date(blog.created).toLocaleDateString()}</small>
                     </Link>

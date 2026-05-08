@@ -12,6 +12,7 @@ const WriteForm = ({ existingBlog: propBlog }) => {
   const [title, setTitle] = useState(propBlog ? propBlog.title : '');
   const [tag, setTag] = useState(propBlog ? propBlog.tag : '');
   const [content, setContent] = useState(propBlog ? propBlog.content : '');
+  const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(!!id && !propBlog);
@@ -63,16 +64,23 @@ const WriteForm = ({ existingBlog: propBlog }) => {
 
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
       };
 
-      const blogData = { title, tag, content };
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('tag', tag);
+      formData.append('content', content);
+      if (image) {
+        formData.append('image', image);
+      }
 
       if (existingBlog) {
-        await axios.put(`http://localhost:5000/api/blogs/${existingBlog._id}`, blogData, config);
+        await axios.put(`http://localhost:5000/api/blogs/${existingBlog._id}`, formData, config);
       } else {
-        await axios.post('http://localhost:5000/api/blogs', blogData, config);
+        await axios.post('http://localhost:5000/api/blogs', formData, config);
       }
       
       navigate('/dashboard'); 
@@ -112,6 +120,15 @@ const WriteForm = ({ existingBlog: propBlog }) => {
             onChange={(e) => setTag(e.target.value)} 
             placeholder="e.g., Technology, React, Node.js" 
             required 
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Image</label>
+          <input 
+            type="file" 
+            accept="image/*" 
+            onChange={(e) => setImage(e.target.files[0])} 
           />
         </div>
 

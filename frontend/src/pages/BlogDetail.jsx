@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import Comments from '../components/Comments';
 import './BlogDetail.css';
+import defaultImage from '../assets/default-blogs.jpg';
 
 const BlogDetail = () => {
   const { id } = useParams();
@@ -37,6 +38,10 @@ const BlogDetail = () => {
       <Link to="/" className="back-button">&larr; Back to Home</Link>
       
       <article className="blog-full-content">
+        <div className="blog-image-wrapper">
+          {blog.Image && <img src={blog.Image} alt={blog.title} className="blog-image" />}
+          {!blog.Image && <img src={defaultImage} alt={blog.title} className="blog-image" />}
+        </div>
         <header className="blog-header">
           <h1>{blog.title}</h1>
           <div className="blog-meta">

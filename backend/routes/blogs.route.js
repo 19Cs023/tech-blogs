@@ -1,12 +1,13 @@
 import express from 'express';
 import blogsCtrl from '../controllers/blogs.controller.js';
 import authCtrl from '../controllers/auth.controller.js';
+import upload from '../helpers/multer.js';
 
 const router = express.Router();
 
 router.route('/api/blogs')
   .get(authCtrl.requireSignin, blogsCtrl.listByUser)
-  .post(authCtrl.requireSignin, blogsCtrl.create);
+  .post(authCtrl.requireSignin, upload.single('image'), blogsCtrl.create);
 
 router.route('/api/blogs/all')
   .get(blogsCtrl.list);
@@ -22,7 +23,7 @@ router.route('/api/blogs/search')
 
 router.route('/api/blogs/:blogId')
   .get(blogsCtrl.read)
-  .put(authCtrl.requireSignin, blogsCtrl.hasAuthorization, blogsCtrl.update)
+  .put(authCtrl.requireSignin, upload.single('image'), blogsCtrl.hasAuthorization, blogsCtrl.update)
   .delete(authCtrl.requireSignin, blogsCtrl.hasAuthorization, blogsCtrl.remove);
 
 router.param('blogId', blogsCtrl.blogByID);

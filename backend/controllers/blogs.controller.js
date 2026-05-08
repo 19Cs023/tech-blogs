@@ -12,6 +12,10 @@ const create = async (req, res) => {
   try {
     req.body.recorded_by = req.auth._id
     const blog = new Blogs(req.body)
+    if (req.file) {
+      // Store standard URL format for frontend to use easily 
+      blog.Image = `http://localhost:5000/uploads/${req.file.filename}`
+    }
     await blog.save()
     return res.status(200).json(blog)
   } catch (err) {
@@ -135,6 +139,9 @@ const list = async (req, res) => {
     try {
       let blog = req.blog
       blog = extend(blog, req.body)
+      if (req.file) {
+        blog.Image = `http://localhost:5000/uploads/${req.file.filename}`
+      }
       blog.updated = Date.now()
       await blog.save()
       res.json(blog)

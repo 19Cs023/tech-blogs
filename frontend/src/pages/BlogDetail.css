@@ -90,3 +90,13 @@
 .blog-detail-center.error {
   color: #e74c3c;
 }
+
+
+.blog-image-wrapper {
+  display: flex;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 8px; 
+  margin-bottom: 30px;
+}

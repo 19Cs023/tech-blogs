@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './DashBoard.css';
+import defaultImage from '../assets/default-blogs.jpg';
 
 const DashBoard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -43,6 +44,8 @@ const DashBoard = () => {
         ) : (
           blogs.map(blog => (
             <div key={blog._id} className="blog-card" onClick={() => navigate(`/blogs/${blog._id}`)}>
+              {blog.Image && <img src={blog.Image} alt={blog.title} className="blog-image" />}
+              {!blog.Image && <img src={defaultImage} alt={blog.title} className="blog-image" />}
               <h3>{blog.title}</h3>
               <p className="blog-tag">Tag: {blog.tag}</p>
               <div className="blog-meta">
