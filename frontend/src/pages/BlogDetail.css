@@ -95,8 +95,16 @@
 .blog-image-wrapper {
   display: flex;
   width: 100%;
-  height: 400px;
+  max-height: 600px;
   overflow: hidden;
   border-radius: 8px; 
   margin-bottom: 30px;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+.blog-image-wrapper img, .blog-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }

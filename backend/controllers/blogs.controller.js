@@ -174,6 +174,26 @@ const hasAuthorization = (req, res, next) => {
   next()
 }
 
+const like = async (req, res) => {
+  try {
+    // Directly update the document in the database using $inc, bypassing full validation
+    const updatedBlog = await Blogs.findByIdAndUpdate(
+      req.blog._id,
+      { $inc: { likes: 1 } },
+      { returnDocument: 'after' } // This option returns the updated document instead of the old one
+    );
+    
+    if (!updatedBlog) {
+      return res.status(404).json({ error: 'Blog not found' });
+    }
+
+    res.json({ likes: updatedBlog.likes });
+  } catch (err) {
+    console.error('Error liking the blog:', err);
+    return res.status(400).json({ error: err.message });
+  }
+}
+
 export default {
     create,
     blogByID,
@@ -183,6 +203,7 @@ export default {
     listBySearchQuery,
     listByUser,
     list,
+    like,
     remove,
     update,
     hasAuthorization

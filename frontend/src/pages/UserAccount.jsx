@@ -101,6 +101,12 @@ const UserAccount = () => {
                 <p className="account-blog-excerpt" dangerouslySetInnerHTML={{ __html: (blog.content || '').length > 50 ? `${blog.content.substring(0, 50)}...` : blog.content }} />
                 <div className="account-blog-meta">
                   Published: {new Date(blog.created).toLocaleDateString()}
+                <span className="blog-likes-display" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ff4d4f' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                  {blog.likes || 0}
+                </span>
                 </div>
                 <div className="account-blog-actions">
                   <button className="btn-edit" onClick={() => navigate(`/edit/${blog._id}`)}>Edit</button>

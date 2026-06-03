@@ -18,6 +18,9 @@ router.route('/api/blogs/current')
 router.route('/api/blogs/tags')
   .get(blogsCtrl.listByTags);
 
+router.route('/api/blogs/:blogId/like')
+  .post( blogsCtrl.like);
+
 router.route('/api/blogs/search')
   .get(blogsCtrl.listBySearchQuery);
 

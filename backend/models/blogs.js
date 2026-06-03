@@ -20,6 +20,10 @@ content: {
     trim: true,
     required: 'Content is required'
   },
+  likes: {
+    type: Number,
+    default: 0
+  },
   incurred_on: {
     type: Date,
     default: Date.now

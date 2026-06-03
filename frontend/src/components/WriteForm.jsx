@@ -18,6 +18,18 @@ const WriteForm = ({ existingBlog: propBlog }) => {
   const [fetching, setFetching] = useState(!!id && !propBlog);
   const navigate = useNavigate();
 
+  const modules = {
+       toolbar: [
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'font': [] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link', 'image', 'video'],
+    ['clean'] // removes formatting
+  ],
+};
   useEffect(() => {
     const fetchBlog = async () => {
       if (id && !propBlog) {
@@ -139,6 +151,7 @@ const WriteForm = ({ existingBlog: propBlog }) => {
             value={content} 
             onChange={setContent} 
             style={{ height: '300px', marginBottom: '50px' }}
+            modules={modules}
           />
         </div>
 

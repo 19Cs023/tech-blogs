@@ -37,7 +37,6 @@ const DashBoard = () => {
       </div>
 
       {error && <div className="error-message">{error}</div>}
-
       <div className="blogs-grid">
         {blogs.length === 0 && !error ? (
           <div className="no-blogs">No blogs found. Start writing!</div>
@@ -49,7 +48,14 @@ const DashBoard = () => {
               <h3>{blog.title}</h3>
               <p className="blog-tag">Tag: {blog.tag}</p>
               <div className="blog-meta">
+                <span>By: {blog.recorded_by.name}</span>
                 <span>{new Date(blog.created).toLocaleDateString()}</span>
+                  <span className="blog-likes-display" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ff4d4f' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                        {blog.likes || 0}
+                </span>
               </div>
             </div>
           ))
