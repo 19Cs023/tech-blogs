@@ -10,7 +10,7 @@ const UserAccount = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   
-   const handleDelete = async (blogId) => {
+  const handleDelete = async (blogId) => {
     if (!window.confirm('Are you sure you want to delete this blog?')) return;
     
     const token = localStorage.getItem('token');
